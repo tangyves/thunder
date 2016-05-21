@@ -26,6 +26,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import static wallettemplate.utils.GuiUtils.*;
@@ -145,6 +148,13 @@ public class Main extends Application {
         File file = new File("main.fxml");
         URL location = getClass().getResource("main.fxml");
         FXMLLoader loader = new FXMLLoader(location);
+        try {
+            Locale langLocale = new Locale(Locale.getDefault().getLanguage());
+            loader.setResources(ResourceBundle.getBundle("bundles.langBundler", langLocale));
+        } catch (MissingResourceException e) {
+            System.out.println(Locale.getDefault());
+            loader.setResources(ResourceBundle.getBundle("bundles.langBundler", new Locale("en")));
+        }
         mainUI = loader.load();
         controller = loader.getController();
         // Configure the window with a StackPane so we can overlay things on top of the main UI, and a
